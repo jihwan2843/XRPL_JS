@@ -1,0 +1,17 @@
+{
+  "name": "xrpl",
+  "version": "1.0.0",
+  "description": "",
+  "main": "test.js",
+  "dependencies": {
+    "chai": "^4.3.4",
+    "node-fetch": "^2.7.0",
+    "sinon": "^18.0.0",
+    "xrpl": "^4.0.0"
+  },
+  "devDependencies": {
+    "mocha": "^10.7.3"
+  },
+  "author": "",
+  "license": "ISC"
+}
