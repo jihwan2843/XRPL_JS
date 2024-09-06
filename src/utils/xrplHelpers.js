@@ -1,20 +1,47 @@
 // 트랜잭션을 생성을 하는 헬퍼함수
-
-const xrpl = require("xrpl");
-
-function createGrantTransaction(address, title) {
-  return {
-    Account: address,
-    TransactionType: "AccountSet",
-    Memos: [
-      {
-        Memo: {
-          MemoType: Buffer.from("Title").toString("hex"),
-          MemoData: Buffer.from(title).toString("hex"),
+class XRPHelpers {
+  AccountSetTx(address, grant) {
+    return {
+      Account: address,
+      TransactionType: "AccountSet",
+      Memos: [
+        {
+          Memo: {
+            MemoType: Buffer.from(grant.getTitle()).toString("hex"),
+            MemoData: Buffer.from(JSON.stringify(grant)).toString("hex"),
+          },
         },
-      },
-    ],
-  };
+      ],
+    };
+  }
+
+  EscrowCreateTx(wallet, amount, grant) {
+    return {
+      TransactionType: "EscrowCreate",
+      acount: wallet.address,
+      amount: xrpl.xrpToDrops(amount),
+      destination: grant.getOwner(),
+      finishAfter: grant.getGrantDeadline(),
+    };
+  }
+
+  PaymentTx(wallet, grant, amount) {
+    return {
+      TransactionType: "Payment",
+      acount: wallet.address,
+      amount: xrpl.xrpToDrops(amount),
+      destination: grant.getOwner(),
+    };
+  }
+
+  EscrowFinishTx(wallet, donation) {
+    return {
+      TransactionType: "EscrowFinish",
+      acount: wallet.address,
+      owner: donation.getSponsor(),
+      offerSequence: donation.getEscrowCreateTxSequence(),
+    };
+  }
 }
 
-module.exports = createGrantTransaction;
+module.exports = XRPHelpers;

@@ -6,10 +6,29 @@ class Grant {
     this.description = description;
     this.grantStart = Date.now() + this.getGrantDelay();
     this.grantDeadline = this.grantStart + this.getGrantPeriod();
-    this.sponsors = [];
-    this.totalAmount = 0;
+    this.totalDonationAmount = 0;
+    this.matchingPoolAmount = 0;
     this.status = "";
-    this.setStatus();
+    this.setAutoStatus();
+  }
+  setTitle(title) {
+    this.title = title;
+  }
+  getTitle() {
+    return this.title;
+  }
+  setTotalDonationAmount(totalDonationAmount) {
+    this.totalDonationAmount = totalDonationAmount;
+  }
+  getTotalDonationAmount() {
+    return this.totalDonationAmount;
+  }
+
+  setStatus(status) {
+    this.status = status;
+  }
+  getStatus() {
+    return this.status;
   }
 
   getGrantDelay() {
@@ -20,19 +39,7 @@ class Grant {
     return 2419200000;
   }
 
-  getTotalAmount() {
-    return this.totalAmount;
-  }
-
-  getTotalSponsors() {
-    return this.sponsors.length;
-  }
-
-  getStatus() {
-    return this.status;
-  }
-
-  setStatus() {
+  setAutoStatus() {
     const currentTime = Date.now();
     if (currentTime > this.grantDeadline) {
       this.status = "Distributed";
